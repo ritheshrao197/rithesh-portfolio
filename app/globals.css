@@ -1,26 +1,60 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+  }
+
+  body {
+    background-color: rgb(255, 255, 255);
+    color: #161616;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
+@keyframes ripple {
+  0% { width: 0; height: 0; opacity: 0.6; }
+  100% { width: 300px; height: 300px; opacity: 0; }
+}
+.animate-ripple {
+  animation: ripple 0.6s linear forwards;
+}
+/* Add at the end of the file */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+}
+/* Subtle background pattern - minimal dots */
+.bg-subtle-pattern {
+  background-image: radial-gradient(circle at 12px 12px, rgba(3, 48, 68, 0.767) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Alternative: very faint grid (uncomment if you prefer grid over dots) */
+/* .bg-subtle-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(187, 162, 162, 0.664) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(75, 124, 203, 0.784) 1px, transparent 1px);
+  background-size: 40px 40px;
+} */
