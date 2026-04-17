@@ -9,8 +9,10 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ProjectDetailPage({ params }: { params: { slug: string } }) {
-  const project = projects.find((p) => p.slug === params.slug);
+// Fix: params is a Promise, await it
+export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
     notFound();
@@ -41,7 +43,13 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
           </div>
 
           <div className="aspect-video bg-white/5 overflow-hidden rounded-sm">
-            <video src={videoUrl} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            {videoUrl ? (
+              <video src={videoUrl} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-white/30">
+                No preview available
+              </div>
+            )}
           </div>
 
           <section className="space-y-8">
